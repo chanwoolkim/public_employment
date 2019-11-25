@@ -7,10 +7,12 @@
 cps_analysis <- cps_data %>%
   filter(age>=18 & age<=65,
          race %in% c("White", "Black"),
+         region != "",
          class_worker != "",
          labour_force==1,
          work_hrs_wk>=35,
-         work_wk>=40)
+         work_wk>=40,
+         sample_weight>=0)
 
 # Create log wage variable in 1999 dollars
 cps_analysis <- cps_analysis %>%
@@ -27,7 +29,7 @@ cps_analysis <- cps_analysis %>%
 cps_analysis <- cps_analysis %>%
   filter(wage99>=76)
 
-count(cps_analysis) #2513556
+count(cps_analysis) #2513473
 
 
 # Share of public sector employees ####
@@ -155,7 +157,8 @@ ggplot(employee_count(cps_analysis %>% filter(sex=="Female")),
 ggsave("Result/share_public_female.pdf",width=6, height=4)
 
 
-# Mean log earnings and standard deviation ####
+# Mean log earnings and standard deviation (naive approach) ####
+# Mean log earnings
 mean_earnings <- function(df) {
   df_mean_earnings <- df %>%
     mutate(sector=ifelse(class_worker=="Private",
@@ -191,7 +194,7 @@ ggplot(mean_earnings(cps_analysis),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Log Wage") +
+  scale_y_continuous(name="Mean Log Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
@@ -203,7 +206,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(sex=="Male")),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Log Wage") +
+  scale_y_continuous(name="Mean Log Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
@@ -215,8 +218,172 @@ ggplot(mean_earnings(cps_analysis %>% filter(sex=="Female")),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Log Wage") +
+  scale_y_continuous(name="Mean Log Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
 ggsave("Result/mean_log_earnings_female.pdf",width=6, height=4)
+
+# Standard deviations of log earnings
+sd_earnings <- function(df) {
+  df_sd_earnings <- df %>%
+    mutate(sector=ifelse(class_worker=="Private",
+                         "Private",
+                         ifelse(class_worker %in% c("Public-All",
+                                                    "Public-Federal",
+                                                    "Public-State",
+                                                    "Public-Local"),
+                                "Public",
+                                NA))) %>%
+    filter(!is.na(sector)) %>%
+    group_by(year, sector) %>%
+    summarise(sd_earnings=weighted.sd(log_wk_wage99, sample_weight)) %>%
+    ungroup
+  
+  df_sd_earnings_all <- df %>%
+    filter(class_worker %in% c("Private",
+                               "Public-All",
+                               "Public-Federal",
+                               "Public-State",
+                               "Public-Local")) %>%
+    group_by(year) %>%
+    summarise(sd_earnings=weighted.sd(log_wk_wage99, sample_weight)) %>%
+    mutate(sector="All")
+  
+  df_sd_earnings <- rbind(df_sd_earnings, df_sd_earnings_all)
+  return(df_sd_earnings)
+}
+
+ggplot(sd_earnings(cps_analysis),
+       aes(x=year, y=sd_earnings, group=sector, colour=sector)) +
+  geom_line() +
+  fte_theme() +
+  labs(colour="Sector") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Standard Deviation") +
+  scale_color_manual(values=colours_set) +
+  theme(legend.position=c(0.15, 0.85),
+        legend.title=element_blank())
+ggsave("Result/sd_log_earnings.pdf",width=6, height=4)
+
+ggplot(sd_earnings(cps_analysis %>% filter(sex=="Male")),
+       aes(x=year, y=sd_earnings, group=sector, colour=sector)) +
+  geom_line() +
+  fte_theme() +
+  labs(colour="Sector") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Standard Deviation Log Wage") +
+  scale_color_manual(values=colours_set) +
+  theme(legend.position=c(0.15, 0.75),
+        legend.title=element_blank())
+ggsave("Result/sd_log_earnings_male.pdf",width=6, height=4)
+
+ggplot(sd_earnings(cps_analysis %>% filter(sex=="Female")),
+       aes(x=year, y=sd_earnings, group=sector, colour=sector)) +
+  geom_line() +
+  fte_theme() +
+  labs(colour="Sector") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Standard Deviation Log Wage") +
+  scale_color_manual(values=colours_set) +
+  theme(legend.position=c(0.15, 0.825),
+        legend.title=element_blank())
+ggsave("Result/sd_log_earnings_female.pdf",width=6, height=4)
+
+
+# Mean log earnings (predicted earnings) ####
+cps_analysis_adjust <- cps_analysis %>%
+  mutate(r=row_number())
+
+cps_analysis_adjust <- cps_analysis_adjust %>%
+  select(r, region) %>%
+  mutate(i=1) %>%
+  spread(region, i, fill=0, sep="_") %>%
+  left_join(cps_analysis_adjust, by="r") %>%
+  mutate(sector=ifelse(class_worker=="Private",
+                       "Private",
+                       ifelse(class_worker %in% c("Public-All",
+                                                  "Public-Federal",
+                                                  "Public-State",
+                                                  "Public-Local"),
+                              "Public",
+                              NA))) %>%
+  filter(!is.na(sector))
+
+# Somehow 1963 has missing education
+cps_analysis_adjust <- cps_analysis_adjust %>%
+  filter(year != 1963) %>%
+  group_by(year, sex, sector) %>%
+  mutate(predict_log_wk_wage99=
+           as.numeric(fitted(lm(log_wk_wage99~education+
+                                  age+
+                                  race+
+                                  region_new_england+
+                                  region_middle_atlantic+
+                                  region_south_atlantic+
+                                  region_east_north_central+
+                                  region_east_south_central+
+                                  region_west_north_central+
+                                  region_west_south_central+
+                                  region_mountain,
+                                weights=sample_weight,
+                                na.action=na.exclude)))) %>%
+  ungroup
+
+mean_earnings_adjust <- function(df) {
+  df_mean_earnings_adjust <- df %>%
+    group_by(year, sector) %>%
+    summarise(mean_earnings_adjust=
+                weighted.mean(predict_log_wk_wage99,
+                              sample_weight,
+                              na.rm=TRUE)) %>%
+    ungroup
+  
+  df_mean_earnings_adjust_all <- df %>%
+    group_by(year) %>%
+    summarise(mean_earnings_adjust=
+                weighted.mean(predict_log_wk_wage99,
+                              sample_weight,
+                              na.rm=TRUE)) %>%
+    mutate(sector="All")
+  
+  df_mean_earnings_adjust <- rbind(df_mean_earnings_adjust,
+                                   df_mean_earnings_adjust_all)
+  return(df_mean_earnings_adjust)
+}
+
+ggplot(mean_earnings_adjust(cps_analysis_adjust),
+       aes(x=year, y=mean_earnings_adjust, group=sector, colour=sector)) +
+  geom_line() +
+  fte_theme() +
+  labs(colour="Sector") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Mean Log Wage (Adjusted)") +
+  scale_color_manual(values=colours_set) +
+  theme(legend.position=c(0.85, 0.275),
+        legend.title=element_blank())
+ggsave("Result/mean_log_earnings_adjust.pdf",width=6, height=4)
+
+ggplot(mean_earnings(cps_analysis_adjust %>% filter(sex=="Male")),
+       aes(x=year, y=mean_earnings_adjust, group=sector, colour=sector)) +
+  geom_line() +
+  fte_theme() +
+  labs(colour="Sector") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Mean Log Wage (Adjusted)") +
+  scale_color_manual(values=colours_set) +
+  theme(legend.position=c(0.85, 0.2),
+        legend.title=element_blank())
+ggsave("Result/mean_log_earnings_adjust_male.pdf",width=6, height=4)
+
+ggplot(mean_earnings(cps_analysis_adjust %>% filter(sex=="Female")),
+       aes(x=year, y=mean_earnings_adjust, group=sector, colour=sector)) +
+  geom_line() +
+  fte_theme() +
+  labs(colour="Sector") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Mean Log Wage (Adjusted)") +
+  scale_color_manual(values=colours_set) +
+  theme(legend.position=c(0.85, 0.275),
+        legend.title=element_blank())
+ggsave("Result/mean_log_earnings_adjust_female.pdf",width=6, height=4)

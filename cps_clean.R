@@ -48,6 +48,21 @@ cps_data %>% filter(wage==9999998 | wage==9999999) %>% count() #2156008, 23.38%
 # Basic clean
 cps_data <- cps_data %>%
   mutate(year=as.numeric(year),
+         
+         # Recode region
+         region=as.numeric(region),
+         region=recode(region,
+                       `11`="new_england",
+                       `12`="middle_atlantic",
+                       `21`="east_north_central",
+                       `22`="west_north_central",
+                       `31`="south_atlantic",
+                       `32`="east_south_central",
+                       `33`="west_south_central",
+                       `41`="mountain",
+                       `42`="pacific",
+                       .default=""),
+         
          age=as.numeric(age),
          sex=ifelse(sex==1, "Male",
                     ifelse(sex==2, "Female", NA)),
@@ -95,6 +110,7 @@ cps_data <- cps_data %>%
          hschool=education==12,
          college=education==16,
          
+         # Recode worker class
          class_worker=as.numeric(class_worker),
          class_worker=recode(class_worker,
                              `10`="Self-Employed",
@@ -114,6 +130,7 @@ cps_data <- cps_data %>%
          labour_force=ifelse(labour_force==1, 0,
                              ifelse(labour_force==2, 1, NA)),
          
+         # Recode weeks worked
          work_wk=as.numeric(work_wk),
          work_wk=recode(work_wk,
                         `1`=7L,
@@ -126,23 +143,6 @@ cps_data <- cps_data %>%
          
          # Indicator variable for marriage
          married=marriage==1)
-
-# Bin schooling and experience
-cps_data <- cps_data %>%
-  mutate(bin_education=recode(education,
-                              `9`=10L,
-                              `10`=10L,
-                              `11`=10L,
-                              `12`=12L,
-                              `13`=14L,
-                              `14`=14L,
-                              `15`=14L,
-                              `16`=16L,
-                              `17`=18L,
-                              `18`=18L,
-                              `22`=18L,
-                              .default=NA_integer_),
-         bin_experience=pmax(0, age-bin_education-6))
 
 # Remove unnecessary data
 rm(ddi)
