@@ -3,7 +3,7 @@
 
 
 # Load CPS file (code provided by CPS) ####
-ddi <- read_ipums_ddi(paste0(cps_path,"cps_00001.xml"))
+ddi <- read_ipums_ddi(paste0(cps_path,"cps_00007.xml"))
 cps_data <- read_ipums_micro(ddi)
 
 
@@ -21,16 +21,18 @@ cps_data <- cps_data %>%
          sex=SEX,
          race=RACE,
          education_pre=EDUC,
+         citizen=CITIZEN,
+         class_worker=CLASSWKR,
+         occupation=OCC,
+         industry=IND,
          income=INCTOT,
          wage=INCWAGE,
-         hh_income=HHINCOME,
-         family_income=FAMINC,
          labour_force=LABFORCE,
          employment_status=EMPSTAT,
          work_stat=WKSTAT,
          work_hrs_wk=AHRSWORKT,
          usual_work_hrs_wk=UHRSWORKT,
-         work_wk=WKSWORK1,
+         work_wk=WKSWORK2,
          marriage=MARST,
          child=NCHILD,
          hh_serial=SERIAL,
@@ -38,11 +40,10 @@ cps_data <- cps_data %>%
          h_flag=HFLAG)
 
 # Check some statistics before cleaning
-count(cps_data) #7221527
-cps_data %>% filter(is.na(id)) %>% count() #1634415, 22.63%
-cps_data %>% filter(!(race==100 | race==200)) %>% count() #495543, 6.86%
-cps_data %>% filter(income==99999998 | income==99999999) %>% count() #1706804, 23.63%
-cps_data %>% filter(wage==9999998 | wage==9999999) %>% count() #1706804, 23.63%
+count(cps_data) #9223447
+cps_data %>% filter(!(race==100 | race==200)) %>% count() #520724, 5.65%
+cps_data %>% filter(income==99999998 | income==99999999) %>% count() #2156032, 23.38%
+cps_data %>% filter(wage==9999998 | wage==9999999) %>% count() #2156008, 23.38%
 
 # Basic clean
 cps_data <- cps_data %>%
@@ -94,17 +95,37 @@ cps_data <- cps_data %>%
          hschool=education==12,
          college=education==16,
          
+         class_worker=as.numeric(class_worker),
+         class_worker=recode(class_worker,
+                             `10`="Self-Employed",
+                             `13`="Self-Employed",
+                             `14`="Self-Employed",
+                             `21`="Private",
+                             `22`="Private",
+                             `23`="Private",
+                             `24`="Public-All",
+                             `25`="Public-Federal",
+                             `26`="Public-Military",
+                             `27`="Public-State",
+                             `28`="Public-Local",
+                             .default=""),
          income=ifelse(income==99999998 | income==99999999, NA, income),
          wage=ifelse(wage==9999998 | wage==9999999, NA, wage),
          labour_force=ifelse(labour_force==1, 0,
                              ifelse(labour_force==2, 1, NA)),
          
+         work_wk=as.numeric(work_wk),
+         work_wk=recode(work_wk,
+                        `1`=7L,
+                        `2`=20L,
+                        `3`=33L,
+                        `4`=43L,
+                        `5`=48L,
+                        `6`=51L,
+                        .default=NA_integer_),
+         
          # Indicator variable for marriage
          married=marriage==1)
-
-# Basic filtering
-cps_data <- cps_data %>%
-  filter(age>=18 & race %in% c("White", "Black"))
 
 # Bin schooling and experience
 cps_data <- cps_data %>%
