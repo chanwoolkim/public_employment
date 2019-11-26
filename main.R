@@ -4,11 +4,6 @@
 # Remove everything before starting
 rm(list=ls())
 
-# Set working directory (PC)
-setwd("C:/Users/chanw/Dropbox/UChicago - Graduate/Research/Public Sector Employment/")
-code_path <- "~/GitHub/public_employment/"
-cps_path <- "C:/Users/chanw/Dropbox/UChicago - Graduate/Research/Public Sector Employment/Data/"
-
 # Set working directory (Mac)
 setwd("~/Dropbox/UChicago - Graduate/Research/Public Sector Employment/")
 code_path <- "~/Documents/GitHub/public_employment/"
