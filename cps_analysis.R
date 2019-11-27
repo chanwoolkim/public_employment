@@ -501,6 +501,7 @@ cps_analysis_education_fraction <- cps_analysis_education %>%
          `Above College`) %>%
   ungroup %>%
   arrange(sector, bin_year) %>%
+  rename(`Sector/Year`=bin_year) %>%
   select(-sector)
 
 print(xtable(cps_analysis_education_fraction,
@@ -535,11 +536,13 @@ cps_analysis_education_fraction_sex <- cps_analysis_education %>%
 cps_analysis_education_fraction_male <- cps_analysis_education_fraction_sex %>%
   filter(sex=="Male") %>%
   arrange(sector, bin_year) %>%
+  rename(`Sector/Year`=bin_year) %>%
   select(-sector, -sex)
 
 cps_analysis_education_fraction_female <- cps_analysis_education_fraction_sex %>%
   filter(sex=="Female") %>%
   arrange(sector, bin_year) %>%
+  rename(`Sector/Year`=bin_year) %>%
   select(-sector, -sex)
 
 print(xtable(cps_analysis_education_fraction_male,
