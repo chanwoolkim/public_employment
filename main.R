@@ -12,6 +12,7 @@ cps_path <- "~/Dropbox/UChicago - Graduate/Research/Public Sector Employment/Dat
 # Load packages
 require(ggplot2)
 require(ipumsr)
+require(MASS)
 require(radiant)
 require(RColorBrewer)
 require(tidyverse)
