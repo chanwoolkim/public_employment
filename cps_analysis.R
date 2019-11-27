@@ -354,6 +354,69 @@ average_person_sex <- cps_analysis_adjust %>%
   mutate(predict_log_wk_wage99=NA) %>%
   ungroup
 
+average_person_tex <- average_person %>%
+  rename(`Percent Male`=sex_binary,
+         `Education`=education,
+         `Age`=age,
+         `Percent White`=race_binary,
+         `Region - New England`=region_new_england,
+         `Region - Middle Atlantic`=region_middle_atlantic,
+         `Region - South Atlantic`=region_south_atlantic,
+         `Region - East North Central`=region_east_north_central,
+         `Region - East South Central`=region_east_south_central,
+         `Region - West North Central`=region_west_north_central,
+         `Region - West South Central`=region_west_south_central,
+         `Region - Mountain`=region_mountain) %>%
+  select(-predict_log_wk_wage99) %>%
+  gather()
+
+print(xtable(average_person_tex, digits=3),
+      file="Result/average_person.tex",
+      floating=FALSE, comment=FALSE, timestamp=NULL,
+      include.rownames=FALSE)
+
+average_person_male_tex <- average_person_sex %>%
+  filter(sex=="Male") %>%
+  rename(`Education`=education,
+         `Age`=age,
+         `Percent White`=race_binary,
+         `Region - New England`=region_new_england,
+         `Region - Middle Atlantic`=region_middle_atlantic,
+         `Region - South Atlantic`=region_south_atlantic,
+         `Region - East North Central`=region_east_north_central,
+         `Region - East South Central`=region_east_south_central,
+         `Region - West North Central`=region_west_north_central,
+         `Region - West South Central`=region_west_south_central,
+         `Region - Mountain`=region_mountain) %>%
+  select(-predict_log_wk_wage99, -sex, -sex_binary) %>%
+  gather()
+
+print(xtable(average_person_male_tex, digits=3),
+      file="Result/average_person_male.tex",
+      floating=FALSE, comment=FALSE, timestamp=NULL,
+      include.rownames=FALSE)
+
+average_person_female_tex <- average_person_sex %>%
+  filter(sex=="Female") %>%
+  rename(`Education`=education,
+         `Age`=age,
+         `Percent White`=race_binary,
+         `Region - New England`=region_new_england,
+         `Region - Middle Atlantic`=region_middle_atlantic,
+         `Region - South Atlantic`=region_south_atlantic,
+         `Region - East North Central`=region_east_north_central,
+         `Region - East South Central`=region_east_south_central,
+         `Region - West North Central`=region_west_north_central,
+         `Region - West South Central`=region_west_south_central,
+         `Region - Mountain`=region_mountain) %>%
+  select(-predict_log_wk_wage99, -sex, -sex_binary) %>%
+  gather()
+
+print(xtable(average_person_female_tex, digits=3),
+      file="Result/average_person_female.tex",
+      floating=FALSE, comment=FALSE, timestamp=NULL,
+      include.rownames=FALSE)
+
 cps_character_adjust <- NULL
 cps_character_adjust_sex <- NULL
 
@@ -426,7 +489,7 @@ ggplot(cps_character_adjust,
   scale_x_continuous(name="Year") +
   scale_y_continuous(name="Mean Log Wage (Adjusted)") +
   scale_color_manual(values=colours_set) +
-  theme(legend.position=c(0.85, 0.275),
+  theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
 ggsave("Result/mean_log_earnings_adjusted.pdf", width=6, height=4)
 
@@ -438,7 +501,7 @@ ggplot(cps_character_adjust_sex %>% filter(sex=="Male"),
   scale_x_continuous(name="Year") +
   scale_y_continuous(name="Mean Log Wage (Adjusted)") +
   scale_color_manual(values=colours_set) +
-  theme(legend.position=c(0.85, 0.275),
+  theme(legend.position=c(0.85, 0.75),
         legend.title=element_blank())
 ggsave("Result/mean_log_earnings_male_adjusted.pdf", width=6, height=4)
 
