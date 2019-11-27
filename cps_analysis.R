@@ -27,9 +27,9 @@ cps_analysis <- cps_analysis %>%
 
 # Filter to those with half the minimum wage in 1990 dollar
 cps_analysis <- cps_analysis %>%
-  filter(wage99>=76)
+  filter(wage99>=103)
 
-count(cps_analysis) #2513473
+count(cps_analysis) #2513292
 
 
 # Share of public sector employees ####
