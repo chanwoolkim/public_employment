@@ -196,7 +196,7 @@ ggplot(mean_earnings(cps_analysis),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Mean Log Wage") +
+  scale_y_continuous(name="Mean Log Weekly Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
@@ -208,7 +208,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(sex=="Male")),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Mean Log Wage") +
+  scale_y_continuous(name="Mean Log Weekly Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
@@ -220,7 +220,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(sex=="Female")),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Mean Log Wage") +
+  scale_y_continuous(name="Mean Log Weekly Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
@@ -275,7 +275,7 @@ ggplot(sd_earnings(cps_analysis %>% filter(sex=="Male")),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Standard Deviation Log Wage") +
+  scale_y_continuous(name="Standard Deviation Log Weekly Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.15, 0.75),
         legend.title=element_blank())
@@ -287,7 +287,7 @@ ggplot(sd_earnings(cps_analysis %>% filter(sex=="Female")),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Standard Deviation Log Wage") +
+  scale_y_continuous(name="Standard Deviation Log Weekly Wage") +
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.15, 0.825),
         legend.title=element_blank())
@@ -487,8 +487,8 @@ ggplot(cps_character_adjust,
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Mean Log Wage (Adjusted)") +
-  scale_color_manual(values=colours_set) +
+  scale_y_continuous(name="Mean Log Weekly Wage (Adjusted)") +
+  scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
 ggsave("Result/mean_log_earnings_adjusted.pdf", width=6, height=4)
@@ -499,8 +499,8 @@ ggplot(cps_character_adjust_sex %>% filter(sex=="Male"),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Mean Log Wage (Adjusted)") +
-  scale_color_manual(values=colours_set) +
+  scale_y_continuous(name="Mean Log Weekly Wage (Adjusted)") +
+  scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.75),
         legend.title=element_blank())
 ggsave("Result/mean_log_earnings_male_adjusted.pdf", width=6, height=4)
@@ -511,8 +511,8 @@ ggplot(cps_character_adjust_sex %>% filter(sex=="Female"),
   fte_theme() +
   labs(colour="Sector") +
   scale_x_continuous(name="Year") +
-  scale_y_continuous(name="Mean Log Wage (Adjusted)") +
-  scale_color_manual(values=colours_set) +
+  scale_y_continuous(name="Mean Log Weekly Wage (Adjusted)") +
+  scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
 ggsave("Result/mean_log_earnings_female_adjusted.pdf", width=6, height=4)
