@@ -23,7 +23,7 @@ cps_data <- cps_data %>%
          education_pre=EDUC,
          citizen=CITIZEN,
          class_worker=CLASSWKR,
-         occupation=OCC,
+         occupation=OCC1950,
          industry=IND,
          income=INCTOT,
          wage=INCWAGE,
@@ -48,6 +48,15 @@ cps_data %>% filter(wage==9999998 | wage==9999999) %>% count() #2156008, 23.38%
 # Basic clean
 cps_data <- cps_data %>%
   mutate(year=as.numeric(year),
+         
+         # Bin year
+         bin_year=NA,
+         bin_year=ifelse(year<1970, 1960, bin_year),
+         bin_year=ifelse(1970<=year & year<1980, 1970, bin_year),
+         bin_year=ifelse(1980<=year & year<1990, 1980, bin_year),
+         bin_year=ifelse(1990<=year & year<2000, 1990, bin_year),
+         bin_year=ifelse(2000<=year & year<2010, 2000, bin_year),
+         bin_year=ifelse(2010<=year, 2010, bin_year),
          
          # Recode region
          region=as.numeric(region),
@@ -125,6 +134,31 @@ cps_data <- cps_data %>%
                              `27`="Public-State",
                              `28`="Public-Local",
                              .default=""),
+         
+         # Bin occupation
+         bin_occupation="",
+         bin_occupation=ifelse(occupation %in% 0:99,
+                               "Professional, Technical",
+                               bin_occupation),
+         bin_occupation=ifelse(occupation %in% c(100:199, 600:699, 800:970),
+                               "Labourers and Operatives",
+                               bin_occupation),
+         bin_occupation=ifelse(occupation %in% 200:299,
+                               "Managers, Officials, Proprietors",
+                               bin_occupation),
+         bin_occupation=ifelse(occupation %in% 300:399,
+                               "Clerical",
+                               bin_occupation),
+         bin_occupation=ifelse(occupation %in% 400:499,
+                               "Sales",
+                               bin_occupation),
+         bin_occupation=ifelse(occupation %in% 500:599,
+                               "Crafts",
+                               bin_occupation),
+         bin_occupation=ifelse(occupation %in% 700:799,
+                               "Services",
+                               bin_occupation),
+         
          income=ifelse(income==99999998 | income==99999999, NA, income),
          wage=ifelse(wage==9999998 | wage==9999999, NA, wage),
          labour_force=ifelse(labour_force==1, 0,
