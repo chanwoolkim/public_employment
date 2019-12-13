@@ -158,6 +158,72 @@ ggplot(employee_count(cps_analysis %>% filter(sex=="Female")),
 ggsave("Result/share_public_female.pdf", width=6, height=4)
 
 
+# Share of female in each sector
+female_count <- cps_analysis %>%
+  mutate(all=sex!="",
+         female=sex=="Female",
+         sector=ifelse(class_worker=="Private",
+                       "Private",
+                       ifelse(class_worker %in% c("Public-All",
+                                                  "Public-Federal",
+                                                  "Public-State",
+                                                  "Public-Local"),
+                              "Public",
+                              NA))) %>%
+  group_by(year, sector) %>%
+  summarise(all=sum(all*sample_weight, na.rm=TRUE),
+            female=sum(female*sample_weight, na.rm=TRUE)) %>%
+  mutate(female_fraction=female/all) %>%
+  filter(!is.na(sector)) %>%
+  ungroup
+
+female_count_government <- cps_analysis %>%
+  mutate(all=sex!="",
+         female=sex=="Female",
+         sector=class_worker) %>%
+  filter(sector %in% c("Public-Federal",
+                       "Public-State",
+                       "Public-Local")) %>%
+  group_by(year, sector) %>%
+  summarise(all=sum(all*sample_weight, na.rm=TRUE),
+            female=sum(female*sample_weight, na.rm=TRUE)) %>%
+  mutate(female_fraction=female/all) %>%
+  ungroup
+
+female_count <- rbind(female_count, female_count_government)
+
+ggplot(female_count,
+       aes(x=year, y=female_fraction, group=sector, colour=sector)) +
+  geom_line() +
+  geom_text(aes(x=1970, y=0.425,
+                label="All Public",
+                colour="Public"),
+            size=4, family="serif") +
+  geom_text(aes(x=1970, y=0.255,
+                label="Private",
+                colour="Private"),
+            size=4, family="serif") +
+  geom_text(aes(x=1995, y=0.375,
+                label="Federal",
+                colour="Public-Federal"),
+            size=4, family="serif") +
+  geom_text(aes(x=1995, y=0.485,
+                label="State",
+                colour="Public-State"),
+            size=4, family="serif") +
+  geom_text(aes(x=1995, y=0.58,
+                label="Local",
+                colour="Public-Local"),
+            size=4, family="serif") +
+  fte_theme() +
+  labs(colour="Sector") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Percent",
+                     labels=scales::percent_format(accuracy=1)) +
+  scale_color_manual(values=colours_set)
+ggsave("Result/share_female.pdf", width=6, height=4)
+
+
 # Mean log earnings and standard deviation (naive approach) ####
 # Mean log earnings
 mean_earnings <- function(df) {
