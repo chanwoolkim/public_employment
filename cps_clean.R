@@ -3,7 +3,7 @@
 
 
 # Load CPS file (code provided by CPS) ####
-ddi <- read_ipums_ddi(paste0(cps_path,"cps_00007.xml"))
+ddi <- read_ipums_ddi(paste0(cps_path,"cps_00008.xml"))
 cps_data <- read_ipums_micro(ddi)
 
 
@@ -33,6 +33,9 @@ cps_data <- cps_data %>%
          work_hrs_wk=AHRSWORKT,
          usual_work_hrs_wk=UHRSWORKT,
          work_wk=WKSWORK2,
+         pension=PENSION,
+         child_support=INCCHILD,
+         health_plan=HINSEMP,
          marriage=MARST,
          child=NCHILD,
          hh_serial=SERIAL,
@@ -42,8 +45,8 @@ cps_data <- cps_data %>%
 # Check some statistics before cleaning
 count(cps_data) #9223447
 cps_data %>% filter(!(race==100 | race==200)) %>% count() #520724, 5.65%
-cps_data %>% filter(income==99999998 | income==99999999) %>% count() #2156032, 23.38%
-cps_data %>% filter(wage==9999998 | wage==9999999) %>% count() #2156008, 23.38%
+cps_data %>% filter(income==999999998 | income==999999999) %>% count() #2156032, 23.38%
+cps_data %>% filter(wage==99999998 | wage==99999999) %>% count() #2156008, 23.38%
 
 # Basic clean
 cps_data <- cps_data %>%
@@ -159,8 +162,8 @@ cps_data <- cps_data %>%
                                "Services",
                                bin_occupation),
          
-         income=ifelse(income==99999998 | income==99999999, NA, income),
-         wage=ifelse(wage==9999998 | wage==9999999, NA, wage),
+         income=ifelse(income %in% c(999999998, 999999999), NA, income),
+         wage=ifelse(wage %in% c(99999998, 99999999), NA, wage),
          labour_force=ifelse(labour_force==1, 0,
                              ifelse(labour_force==2, 1, NA)),
          
@@ -174,6 +177,12 @@ cps_data <- cps_data %>%
                         `5`=48L,
                         `6`=51L,
                         .default=NA_integer_),
+         
+         pension=ifelse(pension %in% c(2, 3), 1,
+                        ifelse(pension %in% c(0, 1), 0, NA)),
+         child_support=ifelse(child_support==999999, NA, child_support),
+         health_plan=ifelse(health_plan==1, 0,
+                            ifelse(health_plan==2, 1, NA)),
          
          # Indicator variable for marriage
          married=marriage==1)

@@ -5,7 +5,7 @@
 rm(list=ls())
 
 # Set working directory (Mac)
-setwd("~/Dropbox/UChicago - Graduate/Research/Public Sector Employment/")
+setwd("~/Documents/GitHub/public_employment/")
 code_path <- "~/Documents/GitHub/public_employment/"
 cps_path <- "~/Dropbox/UChicago - Graduate/Research/Public Sector Employment/Data/"
 
@@ -25,4 +25,7 @@ set.seed(2019)
 source(paste0(code_path, "prelim.R"))
 source(paste0(code_path, "cps_clean.R"))
 source(paste0(code_path, "cps_analysis.R"))
-source(paste0(code_path, "roy_simulation.R"))
+source(paste0(code_path, "cps_analysis_earnings.R"))
+source(paste0(code_path, "cps_analysis_predict.R"))
+source(paste0(code_path, "cps_analysis_education.R"))
+source(paste0(code_path, "cps_analysis_occupation.R"))
