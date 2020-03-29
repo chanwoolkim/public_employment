@@ -94,7 +94,7 @@ average_person_tex <- average_person %>%
   gather()
 
 print(xtable(average_person_tex, digits=3),
-      file="Result/average_person.tex",
+      file="result/average_person.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
@@ -115,7 +115,7 @@ average_person_male_tex <- average_person_sex %>%
   gather()
 
 print(xtable(average_person_male_tex, digits=3),
-      file="Result/average_person_male.tex",
+      file="result/average_person_male.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
@@ -136,7 +136,7 @@ average_person_female_tex <- average_person_sex %>%
   gather()
 
 print(xtable(average_person_female_tex, digits=3),
-      file="Result/average_person_female.tex",
+      file="result/average_person_female.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
@@ -155,7 +155,7 @@ average_person_race_sex_tex <- average_person_race_sex %>%
          `Region - Mountain`=region_mountain)
 
 print(xtable(average_person_race_sex_tex, digits=3),
-      file="Result/average_person_race_sex.tex",
+      file="result/average_person_race_sex.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
@@ -233,7 +233,7 @@ ggplot(cps_character_adjust,
   scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_adjusted.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_adjusted.png", width=6, height=4)
 
 ggplot(cps_character_adjust_sex %>% filter(sex=="Male"),
        aes(x=year, y=predict_log_wk_wage99, group=sector, colour=sector)) +
@@ -245,7 +245,7 @@ ggplot(cps_character_adjust_sex %>% filter(sex=="Male"),
   scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.75),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_male_adjusted.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_male_adjusted.png", width=6, height=4)
 
 ggplot(cps_character_adjust_sex %>% filter(sex=="Female"),
        aes(x=year, y=predict_log_wk_wage99, group=sector, colour=sector)) +
@@ -257,7 +257,7 @@ ggplot(cps_character_adjust_sex %>% filter(sex=="Female"),
   scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_female_adjusted.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_female_adjusted.png", width=6, height=4)
 
 
 # Using average person characteristics but altering race and sex
@@ -306,7 +306,7 @@ ggplot(cps_character_adjust_white_male,
   scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.7),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_adjusted_white_male.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_adjusted_white_male.png", width=6, height=4)
 
 average_person_white_female <- average_person_race_sex %>%
   filter(race=="White", sex=="Female") %>%
@@ -353,7 +353,7 @@ ggplot(cps_character_adjust_white_female,
   scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_adjusted_white_female.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_adjusted_white_female.png", width=6, height=4)
 
 average_person_black_male <- average_person_race_sex %>%
   filter(race=="Black", sex=="Male") %>%
@@ -400,7 +400,7 @@ ggplot(cps_character_adjust_black_male,
   scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.7),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_adjusted_black_male.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_adjusted_black_male.png", width=6, height=4)
 
 average_person_black_female <- average_person_race_sex %>%
   filter(race=="Black", sex=="Female") %>%
@@ -447,4 +447,4 @@ ggplot(cps_character_adjust_black_female,
   scale_color_manual(values=colours_set[2:3]) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_adjusted_black_female.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_adjusted_black_female.png", width=6, height=4)

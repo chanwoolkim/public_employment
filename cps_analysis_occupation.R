@@ -55,7 +55,7 @@ cps_analysis_occupation_fraction <- cps_analysis_occupation %>%
 
 print(xtable(cps_analysis_occupation_fraction,
              digits=c(0, 0, 3, 3, 3, 3, 3, 3, 3)),
-      file="Result/occupation_proportion.tex",
+      file="result/occupation_proportion.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
@@ -102,12 +102,12 @@ cps_analysis_occupation_fraction_female <- cps_analysis_occupation_fraction_sex 
 
 print(xtable(cps_analysis_occupation_fraction_male,
              digits=c(0, 0, 3, 3, 3, 3, 3, 3, 3)),
-      file="Result/occupation_proportion_male.tex",
+      file="result/occupation_proportion_male.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
 print(xtable(cps_analysis_occupation_fraction_female,
              digits=c(0, 0, 3, 3, 3, 3, 3, 3, 3)),
-      file="Result/occupation_proportion_female.tex",
+      file="result/occupation_proportion_female.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)

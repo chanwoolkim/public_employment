@@ -102,7 +102,7 @@ ggplot(employee_count(cps_analysis),
   scale_y_continuous(name="Percent",
                      labels=scales::percent_format(accuracy=1)) +
   scale_color_manual(values=colours_set)
-ggsave("Result/share_public.pdf", width=6, height=4)
+ggsave("result/share_public.png", width=6, height=4)
 
 ggplot(employee_count(cps_analysis %>% filter(sex=="Male")),
        aes(x=year, y=fraction, group=sector, colour=sector)) +
@@ -129,7 +129,7 @@ ggplot(employee_count(cps_analysis %>% filter(sex=="Male")),
   scale_y_continuous(name="Percent",
                      labels=scales::percent_format(accuracy=1)) +
   scale_color_manual(values=colours_set)
-ggsave("Result/share_public_male.pdf", width=6, height=4)
+ggsave("result/share_public_male.png", width=6, height=4)
 
 ggplot(employee_count(cps_analysis %>% filter(sex=="Female")),
        aes(x=year, y=fraction, group=sector, colour=sector)) +
@@ -156,7 +156,7 @@ ggplot(employee_count(cps_analysis %>% filter(sex=="Female")),
   scale_y_continuous(name="Percent",
                      labels=scales::percent_format(accuracy=1)) +
   scale_color_manual(values=colours_set)
-ggsave("Result/share_public_female.pdf", width=6, height=4)
+ggsave("result/share_public_female.png", width=6, height=4)
 
 ggplot(employee_count(cps_analysis %>% filter(race=="White")),
        aes(x=year, y=fraction, group=sector, colour=sector)) +
@@ -183,7 +183,7 @@ ggplot(employee_count(cps_analysis %>% filter(race=="White")),
   scale_y_continuous(name="Percent",
                      labels=scales::percent_format(accuracy=1)) +
   scale_color_manual(values=colours_set)
-ggsave("Result/share_public_white.pdf", width=6, height=4)
+ggsave("result/share_public_white.png", width=6, height=4)
 
 ggplot(employee_count(cps_analysis %>% filter(race=="Black")),
        aes(x=year, y=fraction, group=sector, colour=sector)) +
@@ -210,7 +210,7 @@ ggplot(employee_count(cps_analysis %>% filter(race=="Black")),
   scale_y_continuous(name="Percent",
                      labels=scales::percent_format(accuracy=1)) +
   scale_color_manual(values=colours_set)
-ggsave("Result/share_public_black.pdf", width=6, height=4)
+ggsave("result/share_public_black.png", width=6, height=4)
 
 
 # Share of female in each sector
@@ -276,7 +276,7 @@ ggplot(female_count,
   scale_y_continuous(name="Percent",
                      labels=scales::percent_format(accuracy=1)) +
   scale_color_manual(values=colours_set)
-ggsave("Result/share_female.pdf", width=6, height=4)
+ggsave("result/share_female.png", width=6, height=4)
 
 
 # Share of black in each sector
@@ -342,7 +342,7 @@ ggplot(black_count,
   scale_y_continuous(name="Percent",
                      labels=scales::percent_format(accuracy=1)) +
   scale_color_manual(values=colours_set)
-ggsave("Result/share_black.pdf", width=6, height=4)
+ggsave("result/share_black.png", width=6, height=4)
 
 
 # Difference in characteristics between sectors ####
@@ -414,7 +414,7 @@ ggplot(pension_count(cps_analysis),
   scale_color_manual(values=colours_set) +
   theme(legend.position="bottom",
         legend.title=element_blank())
-ggsave("Result/share_pension.pdf", width=6, height=6)
+ggsave("result/share_pension.png", width=6, height=6)
 
 
 # Healthcare
@@ -485,4 +485,4 @@ ggplot(health_count(cps_analysis),
   scale_color_manual(values=colours_set) +
   theme(legend.position="bottom",
         legend.title=element_blank())
-ggsave("Result/share_health_plan.pdf", width=6, height=6)
+ggsave("result/share_health_plan.png", width=6, height=6)

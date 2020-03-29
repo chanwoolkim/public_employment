@@ -47,7 +47,7 @@ cps_analysis_education_fraction <- cps_analysis_education %>%
 
 print(xtable(cps_analysis_education_fraction,
              digits=c(0, 0, 3, 3, 3, 3, 3)),
-      file="Result/education_proportion.tex",
+      file="result/education_proportion.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
@@ -88,13 +88,13 @@ cps_analysis_education_fraction_female <- cps_analysis_education_fraction_sex %>
 
 print(xtable(cps_analysis_education_fraction_male,
              digits=c(0, 0, 3, 3, 3, 3, 3)),
-      file="Result/education_proportion_male.tex",
+      file="result/education_proportion_male.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
 print(xtable(cps_analysis_education_fraction_female,
              digits=c(0, 0, 3, 3, 3, 3, 3)),
-      file="Result/education_proportion_female.tex",
+      file="result/education_proportion_female.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
@@ -135,12 +135,12 @@ cps_analysis_education_fraction_black <- cps_analysis_education_fraction_race %>
 
 print(xtable(cps_analysis_education_fraction_white,
              digits=c(0, 0, 3, 3, 3, 3, 3)),
-      file="Result/education_proportion_white.tex",
+      file="result/education_proportion_white.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)
 
 print(xtable(cps_analysis_education_fraction_black,
              digits=c(0, 0, 3, 3, 3, 3, 3)),
-      file="Result/education_proportion_black.tex",
+      file="result/education_proportion_black.tex",
       floating=FALSE, comment=FALSE, timestamp=NULL,
       include.rownames=FALSE)

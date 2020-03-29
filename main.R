@@ -5,7 +5,7 @@
 rm(list=ls())
 
 # Set working directory (Mac)
-setwd("~/Dropbox/UChicago - Graduate/Research/Public Sector Employment/")
+setwd("~/Documents/GitHub/public_employment/")
 code_path <- "~/Documents/GitHub/public_employment/"
 cps_path <- "~/Dropbox/UChicago - Graduate/Research/Public Sector Employment/Data/"
 

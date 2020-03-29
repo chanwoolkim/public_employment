@@ -43,7 +43,7 @@ ggplot(mean_earnings(cps_analysis),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings.png", width=6, height=4)
 
 ggplot(mean_earnings(cps_analysis %>% filter(sex=="Male")),
        aes(x=year, y=mean_earnings, group=sector, colour=sector)) +
@@ -55,7 +55,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(sex=="Male")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_male.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_male.png", width=6, height=4)
 
 ggplot(mean_earnings(cps_analysis %>% filter(race=="White" & sex=="Male")),
        aes(x=year, y=mean_earnings, group=sector, colour=sector)) +
@@ -67,7 +67,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(race=="White" & sex=="Male")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_white_male.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_white_male.png", width=6, height=4)
 
 ggplot(mean_earnings(cps_analysis %>% filter(race=="Black" & sex=="Male")),
        aes(x=year, y=mean_earnings, group=sector, colour=sector)) +
@@ -79,7 +79,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(race=="Black" & sex=="Male")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.2),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_black_male.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_black_male.png", width=6, height=4)
 
 ggplot(mean_earnings(cps_analysis %>% filter(sex=="Female")),
        aes(x=year, y=mean_earnings, group=sector, colour=sector)) +
@@ -91,7 +91,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(sex=="Female")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_female.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_female.png", width=6, height=4)
 
 ggplot(mean_earnings(cps_analysis %>% filter(race=="White" & sex=="Female")),
        aes(x=year, y=mean_earnings, group=sector, colour=sector)) +
@@ -103,7 +103,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(race=="White" & sex=="Female")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_white_female.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_white_female.png", width=6, height=4)
 
 ggplot(mean_earnings(cps_analysis %>% filter(race=="Black" & sex=="Female")),
        aes(x=year, y=mean_earnings, group=sector, colour=sector)) +
@@ -115,7 +115,7 @@ ggplot(mean_earnings(cps_analysis %>% filter(race=="Black" & sex=="Female")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.85, 0.275),
         legend.title=element_blank())
-ggsave("Result/mean_log_earnings_black_female.pdf", width=6, height=4)
+ggsave("result/mean_log_earnings_black_female.png", width=6, height=4)
 
 # Standard deviations of log earnings
 sd_earnings <- function(df) {
@@ -158,7 +158,7 @@ ggplot(sd_earnings(cps_analysis),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.15, 0.85),
         legend.title=element_blank())
-ggsave("Result/sd_log_earnings.pdf", width=6, height=4)
+ggsave("result/sd_log_earnings.png", width=6, height=4)
 
 ggplot(sd_earnings(cps_analysis %>% filter(sex=="Male")),
        aes(x=year, y=sd_earnings, group=sector, colour=sector)) +
@@ -170,7 +170,7 @@ ggplot(sd_earnings(cps_analysis %>% filter(sex=="Male")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.15, 0.75),
         legend.title=element_blank())
-ggsave("Result/sd_log_earnings_male.pdf", width=6, height=4)
+ggsave("result/sd_log_earnings_male.png", width=6, height=4)
 
 ggplot(sd_earnings(cps_analysis %>% filter(sex=="Female")),
        aes(x=year, y=sd_earnings, group=sector, colour=sector)) +
@@ -182,4 +182,4 @@ ggplot(sd_earnings(cps_analysis %>% filter(sex=="Female")),
   scale_color_manual(values=colours_set) +
   theme(legend.position=c(0.15, 0.825),
         legend.title=element_blank())
-ggsave("Result/sd_log_earnings_female.pdf", width=6, height=4)
+ggsave("result/sd_log_earnings_female.png", width=6, height=4)
